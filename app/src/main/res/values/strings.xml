@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SmashGGMobileDashboard</string>
+    <string name="endpoint">https://api.smash.gg/gql/alpha</string>
 </resources>
