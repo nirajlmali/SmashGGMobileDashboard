@@ -76,7 +76,7 @@ public class SmashGG implements Runnable {
             httpURLConnection.setRequestProperty("Content-Type", "application/json");
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setDoInput(true);
-            httpURLConnection.addRequestProperty("Authorization", "Bearer 27120996ed4a41387f5c4eada0e11693");
+            httpURLConnection.addRequestProperty("Authorization", "Bearer [Insert Authentication Code Here]");
 
             DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
             wr.writeBytes(postReq.toString());
