@@ -1,5 +1,5 @@
 package com.example.smashggmobiledashboard;
 
 public class Constants {
-    public int x = 0;
+    public int x = 1;
 }
