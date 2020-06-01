@@ -35,9 +35,12 @@ public class MainActivity extends AppCompatActivity {
             SmashGG obj = new SmashGG();
             try {
                 Log.d("REQUEST", "onCreate: TESTING REQUEST");
-                String x = obj.testRequest();
-                et.setText(x);
-            } catch (ProtocolException e) {
+                SmashGG x = new SmashGG();
+                Thread t = new Thread(x);
+                t.start();
+                t.join();
+                et.setText(x.getData());
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
