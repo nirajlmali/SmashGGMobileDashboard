@@ -12,4 +12,4 @@
 /captures
 .externalNativeBuild
 .cxx
-/app/src/main/res/values/smashgg.xml
+/app/src/main/java/com/example/smashggmobiledashboard/Constants.java
