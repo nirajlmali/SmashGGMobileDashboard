@@ -1,25 +1,16 @@
 package com.example.smashggmobiledashboard;
 
-
-import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.json.JSONObject;
-
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 
 public class SmashGG implements Runnable {
-    private volatile String data;
+    private volatile JSONObject data;
     SmashGG(){
 
     }
@@ -33,7 +24,63 @@ public class SmashGG implements Runnable {
         }
      */
 
-    public JSONObject reqEx(){
+    public void run() {
+
+        String url = "https://api.smash.gg/gql/alpha";
+        Log.d("SENDING", "sendReq: SENDING REQ...");
+        HttpURLConnection con  = null;
+        JSONObject postReq = reqEx();
+        try {
+            con = (HttpURLConnection) new URL(url).openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setDoOutput(true);
+            con.setDoInput(true);
+            con.addRequestProperty("Authorization", "Bearer " + Constants.APIKey);
+
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes(postReq.toString());
+            wr.flush();
+            wr.close();
+
+            /*
+            Code used from https://chillyfacts.com/java-send-http-getpost-request-and-read-json-response/
+            */
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            JSONObject myResponse = new JSONObject(response.toString());
+            /*
+            End code
+             */
+
+            Log.i("STATUS", String.valueOf(con.getResponseCode()));
+            Log.i("MSG", con.getResponseMessage());
+            Log.i("MSG", myResponse.toString());
+            data = myResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                con.disconnect();
+            }
+        }
+    }
+
+    public JSONObject getData(){
+        return data;
+    }
+
+
+    /*
+    * Example request items
+    * */
+
+    private JSONObject reqEx(){
         JSONObject postData = new JSONObject();
         try {
             postData.put("query", this.exQuery());
@@ -46,14 +93,14 @@ public class SmashGG implements Runnable {
         return postData;
     }
 
-    public String exQuery(){
+    private String exQuery(){
         return "query TournamentsByCountry($slug : String!) {" +
                 "  tournament(slug : $slug) {" +
                 "    id" +
                 "  }" +
                 "}";
     }
-    public JSONObject exVars(){
+    private JSONObject exVars(){
         JSONObject vars = new JSONObject();
         try {
             vars.put("slug", "everest-s-evenings");
@@ -64,49 +111,6 @@ public class SmashGG implements Runnable {
     }
 
 
-    public void run() {
-
-        String url = "https://api.smash.gg/gql/alpha";
-        Log.d("SENDING", "sendReq: SENDING REQ...");
-        HttpURLConnection httpURLConnection  = null;
-        JSONObject postReq = reqEx();
-        try {
-            httpURLConnection = (HttpURLConnection) new URL(url).openConnection();
-            httpURLConnection.setRequestMethod("POST");
-            httpURLConnection.setRequestProperty("Content-Type", "application/json");
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setDoInput(true);
-            httpURLConnection.addRequestProperty("Authorization", "Bearer [Insert Authentication Code Here]");
-
-            DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
-            wr.writeBytes(postReq.toString());
-            wr.flush();
-            wr.close();
-
-            InputStream in = httpURLConnection.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(in);
-
-            int inputStreamData = inputStreamReader.read();
-            while (inputStreamData != -1) {
-                char current = (char) inputStreamData;
-                inputStreamData = inputStreamReader.read();
-                data += current;
-            }
-            Log.i("STATUS", String.valueOf(httpURLConnection.getResponseCode()));
-            Log.i("MSG", httpURLConnection.getResponseMessage());
-            Log.i("MSG", data);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (httpURLConnection != null) {
-                httpURLConnection.disconnect();
-            }
-        }
-    }
-
-    public String getData(){
-        return data;
-    }
 }
 
 

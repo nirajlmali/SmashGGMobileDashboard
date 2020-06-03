@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONException;
+
 import java.net.ProtocolException;
 
 //Local
@@ -39,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
                 Thread t = new Thread(x);
                 t.start();
                 t.join();
-                et.setText(x.getData());
-            } catch (InterruptedException e) {
+                et.setText(x.getData().get("data").toString());
+            } catch (InterruptedException | JSONException e) {
                 e.printStackTrace();
             }
         }
