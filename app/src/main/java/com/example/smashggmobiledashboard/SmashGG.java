@@ -1,6 +1,8 @@
 package com.example.smashggmobiledashboard;
 
 import android.util.Log;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -71,8 +73,9 @@ public class SmashGG implements Runnable {
         }
     }
 
-    public JSONObject getData(){
-        return data;
+    public JSONObject getData() throws JSONException {
+        JSONObject obj = (JSONObject) data.get("data");
+        return (JSONObject) obj.get("tournament");
     }
 
 

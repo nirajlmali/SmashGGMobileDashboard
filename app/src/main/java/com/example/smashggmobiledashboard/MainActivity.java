@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 Thread t = new Thread(x);
                 t.start();
                 t.join();
-                et.setText(x.getData().get("data").toString());
+                et.setText(x.getData().get("id").toString());
             } catch (InterruptedException | JSONException e) {
                 e.printStackTrace();
             }
