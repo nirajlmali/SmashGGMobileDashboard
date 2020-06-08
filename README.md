@@ -2,6 +2,8 @@
 
 This project is dedicated to creating a Mobile App for the site smash.gg for bracket management. Currently only in development for Android devices.
 
+EDIT(6/7/20): Currently, the smash.gg API does not support updating scores for games. This app will therefore simply display scores and have a way to keep track of matches locally. Scores can be kept track of but will need to be entered via the smash.gg site.
+
 ## Documentation
 
 * [Smash.gg API](https://smashgg-developer-portal.netlify.app/docs/intro)
