@@ -13,7 +13,9 @@ import java.net.URL;
 
 public class SmashGG implements Runnable {
     private volatile JSONObject data;
-    SmashGG(){
+    private volatile JSONObject postReq;
+
+    public SmashGG(){
 
     }
 
@@ -31,7 +33,7 @@ public class SmashGG implements Runnable {
         String url = "https://api.smash.gg/gql/alpha";
         Log.d("SENDING", "sendReq: SENDING REQ...");
         HttpURLConnection con  = null;
-        JSONObject postReq = reqEx();
+//        postReq = reqEx();
         try {
             con = (HttpURLConnection) new URL(url).openConnection();
             con.setRequestMethod("POST");
@@ -87,7 +89,7 @@ public class SmashGG implements Runnable {
         JSONObject postData = new JSONObject();
         try {
             postData.put("query", this.exQuery());
-//            postData.put("operationName", "");
+            postData.put("operationName", "TournamentsByCountry");
             postData.put("variables", exVars());
         }catch (Exception e){
             Log.e("ERROR", "testRequest: JSONObject error");
